@@ -7,15 +7,11 @@ let codeVerification = null;
 function envoyerCode() {
     const phoneNumber = document.getElementById('phone-number').value;
     if (phoneNumber) {
-        // Simuler l'envoi d'un code SMS
         codeVerification = Math.floor(1000 + Math.random() * 9000);
-        
-        // Afficher le code sur la page
         const codeDisplay = document.createElement('p');
         codeDisplay.textContent = `Code de vérification : ${codeVerification}`;
         codeDisplay.style.color = 'red';
         document.getElementById('auth-panel').appendChild(codeDisplay);
-        
         document.getElementById('verification-code').style.display = 'block';
         document.getElementById('password').style.display = 'block';
         document.getElementById('auth-button').style.display = 'block';
@@ -38,7 +34,6 @@ function authentifier() {
     let utilisateur = utilisateurs.find(u => u.phoneNumber === phoneNumber);
     
     if (utilisateur) {
-        // Connexion
         if (utilisateur.password === password) {
             utilisateurActuel = utilisateur;
             alert('Connexion réussie !');
@@ -47,7 +42,6 @@ function authentifier() {
             return;
         }
     } else {
-        // Inscription
         utilisateur = { phoneNumber, password, estAdmin: false };
         utilisateurs.push(utilisateur);
         localStorage.setItem('utilisateurs', JSON.stringify(utilisateurs));
@@ -58,6 +52,18 @@ function authentifier() {
     mettreAJourInterface();
 }
 
+function definirAdmin(phoneNumber) {
+    const utilisateurs = JSON.parse(localStorage.getItem('utilisateurs')) || [];
+    const index = utilisateurs.findIndex(u => u.phoneNumber === phoneNumber);
+    if (index !== -1) {
+        utilisateurs[index].estAdmin = true;
+        localStorage.setItem('utilisateurs', JSON.stringify(utilisateurs));
+        alert(`L'utilisateur ${phoneNumber} est maintenant administrateur.`);
+    } else {
+        alert("Utilisateur non trouvé.");
+    }
+}
+
 function mettreAJourInterface() {
     if (utilisateurActuel) {
         document.getElementById('auth-panel').style.display = 'none';
@@ -65,6 +71,8 @@ function mettreAJourInterface() {
         document.getElementById('douas-panel').style.display = 'block';
         if (utilisateurActuel.estAdmin) {
             document.getElementById('admin-panel').style.display = 'block';
+        } else {
+            document.getElementById('admin-panel').style.display = 'none';
         }
         initialiserApplication();
     } else {
@@ -254,3 +262,9 @@ window.onload = function() {
     }
     mettreAJourInterface();
 };
+
+// Fonction pour définir un administrateur (à utiliser dans la console du navigateur)
+function definirAdminConsole(phoneNumber) {
+    definirAdmin(phoneNumber);
+    alert(`Utilisateur ${phoneNumber} défini comme administrateur. Veuillez vous reconnecter.`);
+}
