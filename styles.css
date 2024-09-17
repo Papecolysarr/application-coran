@@ -3,7 +3,7 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #e8f5e9;
 }
 
 .container {
@@ -16,20 +16,20 @@ body {
 }
 
 h1, h2, h3 {
-    color: #333;
+    color: #2e7d32;
 }
 
 input[type="text"], input[type="tel"], input[type="password"], input[type="number"], input[type="datetime-local"] {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #4caf50;
     border-radius: 4px;
 }
 
 button {
     display: inline-block;
-    background: #333;
+    background: #4caf50;
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -39,12 +39,12 @@ button {
 }
 
 button:hover {
-    background: #555;
+    background: #45a049;
 }
 
 #notifications {
-    background: #f8f8f8;
-    border: 1px solid #ddd;
+    background: #c8e6c9;
+    border: 1px solid #4caf50;
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 4px;
@@ -58,24 +58,25 @@ button:hover {
 }
 
 .group-item, .juz-item, .doua-item {
-    background: #f0f0f0;
+    background: #a5d6a7;
     padding: 10px;
     border-radius: 4px;
     text-align: center;
+    cursor: pointer;
 }
 
 .selected {
-    background: #4CAF50;
+    background: #4caf50;
     color: white;
 }
 
 .completed {
-    background: #2196F3;
+    background: #81c784;
     color: white;
 }
 
 #admin-panel {
-    background: #e8f5e9;
+    background: #c8e6c9;
     padding: 15px;
     border-radius: 4px;
     margin-top: 20px;
@@ -86,8 +87,8 @@ button:hover {
 }
 
 .request-item {
-    background: #fff;
-    border: 1px solid #ddd;
+    background: #e8f5e9;
+    border: 1px solid #4caf50;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 4px;
