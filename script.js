@@ -2,6 +2,7 @@ let utilisateurActuel = null;
 let groupes = [];
 let lecturesActives = [];
 let notifications = [];
+let codeVerification = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('send-code').addEventListener('click', envoyerCode);
@@ -15,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function envoyerCode() {
     const phoneNumber = document.getElementById('phone-number').value;
     if (phoneNumber) {
-        const code = Math.floor(1000 + Math.random() * 9000);
-        alert(`Code de vérification : ${code}`);
+        codeVerification = Math.floor(1000 + Math.random() * 9000);
+        alert(`Code de vérification : ${codeVerification}`);
         document.getElementById('verification-code').style.display = 'block';
         document.getElementById('password').style.display = 'block';
         document.getElementById('auth-button').style.display = 'block';
@@ -27,10 +28,17 @@ function envoyerCode() {
 
 function authentifier() {
     const phoneNumber = document.getElementById('phone-number').value;
+    const enteredCode = document.getElementById('verification-code').value;
     const password = document.getElementById('password').value;
-    utilisateurActuel = { id: Date.now(), phoneNumber, name: phoneNumber };
-    localStorage.setItem('utilisateurActuel', JSON.stringify(utilisateurActuel));
-    mettreAJourInterface();
+
+    if (parseInt(enteredCode) === codeVerification) {
+        utilisateurActuel = { id: Date.now(), phoneNumber, name: phoneNumber };
+        localStorage.setItem('utilisateurActuel', JSON.stringify(utilisateurActuel));
+        mettreAJourInterface();
+        alert("Authentification réussie !");
+    } else {
+        alert("Code de vérification incorrect.");
+    }
 }
 
 function creerGroupe() {
