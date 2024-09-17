@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Application de Suivi de Lecture du Coran et Douas</title>
+    <title>Application de Lecture du Coran et Douas</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Suivi de Lecture du Coran et Douas</h1>
+        <h1>Application de Lecture du Coran et Douas</h1>
+        
         <div id="auth-panel">
             <h2>Inscription / Connexion</h2>
             <input type="tel" id="phone-number" placeholder="Numéro de téléphone">
@@ -17,32 +18,39 @@
             <input type="password" id="password" placeholder="Mot de passe" style="display: none;">
             <button id="auth-button" style="display: none;">S'inscrire / Se connecter</button>
         </div>
-        
-        <div id="admin-panel" style="display: none;">
-            <h2>Ouvrir le coran</h2>
-            <label for="admin-date-fin">Date et heure limite globale :</label>
-            <input type="datetime-local" id="admin-date-fin">
-            <button id="admin-sauvegarder">Définir la limite globale</button>
-            
-            <h3>Ajouter un nouveau Doua</h3>
-            <input type="text" id="doua-nom" placeholder="Nom du doua">
-            <input type="number" id="doua-total" placeholder="Nombre total">
-            <input type="datetime-local" id="doua-date-limite" placeholder="Date limite du doua">
-            <button id="ajouter-doua">Ajouter Doua</button>
-        </div>
-        
+
         <div id="user-panel" style="display: none;">
-            <div id="compteur">Juz terminés : 0 / 30</div>
-            <div id="date-limite">Date limite globale : Non définie</div>
-            <h2>Lecture du Coran</h2>
-            <p>Sélectionnez les juz que vous souhaitez lire et marquez-les comme terminés une fois lus.</p>
-            <div id="liste-juz"></div>
-            <button id="sauvegarder">Sauvegarder la progression du Coran</button>
+            <h2>Bienvenue, <span id="user-name"></span></h2>
+            <div id="notifications"></div>
+            
+            <div id="group-management">
+                <h3>Gestion des Groupes</h3>
+                <input type="text" id="new-group-name" placeholder="Nom du nouveau groupe">
+                <button id="create-group">Créer un Groupe</button>
+                <div id="group-list"></div>
+            </div>
+
+            <div id="coran-section">
+                <h3>Lecture du Coran</h3>
+                <div id="juz-list"></div>
+            </div>
+
+            <div id="doua-section">
+                <h3>Douas</h3>
+                <div id="doua-list"></div>
+            </div>
         </div>
-        
-        <div id="douas-panel" style="display: none;">
-            <h2>Douas à réciter</h2>
-            <div id="liste-douas"></div>
+
+        <div id="admin-panel" style="display: none;">
+            <h3>Panneau d'Administration</h3>
+            <button id="start-coran">Démarrer une Lecture du Coran</button>
+            <div id="admin-doua-section">
+                <input type="text" id="doua-name" placeholder="Nom du Doua">
+                <input type="number" id="doua-count" placeholder="Nombre total">
+                <input type="datetime-local" id="doua-deadline">
+                <button id="add-doua">Ajouter un Doua</button>
+            </div>
+            <div id="member-requests"></div>
         </div>
     </div>
     <script src="script.js"></script>
