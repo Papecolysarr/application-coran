@@ -1,4 +1,78 @@
-/* Ajoutez ces styles à votre fichier CSS existant */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #e8f5e9;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+    color: #2e7d32;
+}
+
+input[type="text"], input[type="password"], input[type="number"], input[type="datetime-local"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #4caf50;
+    border-radius: 4px;
+}
+
+button {
+    display: inline-block;
+    background: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+#juz-list, #doua-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.juz-item, .doua-item {
+    background: #a5d6a7;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.selected {
+    background: #4caf50;
+    color: white;
+}
+
+.taken {
+    background: #c8e6c9;
+    cursor: not-allowed;
+}
+
+#admin-panel, #user-panel {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #4caf50;
+    border-radius: 4px;
+}
 
 #notifications {
     position: fixed;
