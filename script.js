@@ -3,32 +3,39 @@ let groupes = [];
 let lecturesActives = [];
 let notifications = [];
 
-// Fonctions d'authentification
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('send-code').addEventListener('click', envoyerCode);
+    document.getElementById('auth-button').addEventListener('click', authentifier);
+    document.getElementById('create-group').addEventListener('click', creerGroupe);
+    
+    chargerDonnees();
+    mettreAJourInterface();
+});
+
 function envoyerCode() {
     const phoneNumber = document.getElementById('phone-number').value;
     if (phoneNumber) {
-        // Simuler l'envoi d'un code
         const code = Math.floor(1000 + Math.random() * 9000);
         alert(`Code de vérification : ${code}`);
         document.getElementById('verification-code').style.display = 'block';
         document.getElementById('password').style.display = 'block';
         document.getElementById('auth-button').style.display = 'block';
+    } else {
+        alert("Veuillez entrer un numéro de téléphone.");
     }
 }
 
 function authentifier() {
     const phoneNumber = document.getElementById('phone-number').value;
     const password = document.getElementById('password').value;
-    // Vérification simplifiée, à améliorer dans une vraie application
     utilisateurActuel = { id: Date.now(), phoneNumber, name: phoneNumber };
     localStorage.setItem('utilisateurActuel', JSON.stringify(utilisateurActuel));
     mettreAJourInterface();
 }
 
-// Fonctions de gestion des groupes
 function creerGroupe() {
     const nom = document.getElementById('new-group-name').value;
-    if (nom) {
+    if (nom && utilisateurActuel) {
         const groupe = {
             id: Date.now(),
             nom: nom,
@@ -40,6 +47,8 @@ function creerGroupe() {
         groupes.push(groupe);
         sauvegarderGroupes();
         afficherGroupes();
+    } else {
+        alert("Veuillez vous connecter et entrer un nom de groupe.");
     }
 }
 
@@ -63,7 +72,6 @@ function accepterDemande(utilisateurId, groupeId) {
     }
 }
 
-// Fonctions de lecture du Coran
 function demarrerLectureCoran(groupeId) {
     const groupe = groupes.find(g => g.id === groupeId);
     if (groupe && groupe.admins.includes(utilisateurActuel.id)) {
@@ -90,7 +98,6 @@ function selectionnerJuz(groupeId, juzNumber) {
     }
 }
 
-// Fonctions de gestion des Douas
 function ajouterDoua(groupeId) {
     const nom = document.getElementById('doua-name').value;
     const total = parseInt(document.getElementById('doua-count').value);
@@ -122,7 +129,6 @@ function participerDoua(douaId, nombre) {
     }
 }
 
-// Fonctions utilitaires
 function creerNotification(destinataires, message) {
     const notification = {
         id: Date.now(),
@@ -154,7 +160,6 @@ function chargerDonnees() {
     utilisateurActuel = JSON.parse(localStorage.getItem('utilisateurActuel'));
 }
 
-// Fonctions d'affichage
 function mettreAJourInterface() {
     if (utilisateurActuel) {
         document.getElementById('auth-panel').style.display = 'none';
@@ -186,7 +191,6 @@ function afficherGroupes() {
 }
 
 function afficherDetailsGroupe(groupeId) {
-    // Afficher les détails du groupe, les lectures actives, etc.
     afficherJuz(groupeId);
     afficherDouas(groupeId);
     if (groupes.find(g => g.id === groupeId).admins.includes(utilisateurActuel.id)) {
@@ -232,7 +236,4 @@ function afficherDouas(groupeId) {
     });
 }
 
-function afficherPanneauAdmin(groupeId) {
-    const adminPanel = document.getElementById('admin-panel');
-    adminPanel.style.display = 'block';
-    document.getElementByI
+function afficherPanne
