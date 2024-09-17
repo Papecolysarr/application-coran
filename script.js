@@ -1,68 +1,42 @@
-let utilisateurActuel = null;
 let groupes = [];
 let lecturesActives = [];
-let notifications = [];
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('login-button').addEventListener('click', seConnecter);
     document.getElementById('create-group').addEventListener('click', creerGroupe);
     
     chargerDonnees();
-    mettreAJourInterface();
+    afficherGroupes();
 });
-
-function seConnecter() {
-    const phoneNumber = document.getElementById('phone-number').value;
-    const password = document.getElementById('password').value;
-    
-    if (phoneNumber && password) {
-        utilisateurActuel = { id: Date.now(), phoneNumber, name: phoneNumber };
-        localStorage.setItem('utilisateurActuel', JSON.stringify(utilisateurActuel));
-        mettreAJourInterface();
-        console.log("Connexion réuss
 
 function creerGroupe() {
     const nom = document.getElementById('new-group-name').value;
-    if (nom && utilisateurActuel) {
+    if (nom) {
         const groupe = {
             id: Date.now(),
             nom: nom,
-            createur: utilisateurActuel.id,
-            membres: [utilisateurActuel.id],
-            admins: [utilisateurActuel.id],
-            demandes: []
+            membres: [],
+            admins: []
         };
         groupes.push(groupe);
         sauvegarderGroupes();
         afficherGroupes();
     } else {
-        alert("Veuillez vous connecter et entrer un nom de groupe.");
+        alert("Veuillez entrer un nom de groupe.");
     }
 }
 
-function demanderRejoindreGroupe(groupeId) {
+function rejoindreGroupe(groupeId) {
     const groupe = groupes.find(g => g.id === groupeId);
-    if (groupe && !groupe.membres.includes(utilisateurActuel.id)) {
-        groupe.demandes.push(utilisateurActuel.id);
+    if (groupe) {
+        groupe.membres.push(Date.now()); // Utilise un ID unique pour chaque membre
         sauvegarderGroupes();
-        creerNotification(groupe.admins, `Nouvelle demande pour rejoindre ${groupe.nom}`);
-    }
-}
-
-function accepterDemande(utilisateurId, groupeId) {
-    const groupe = groupes.find(g => g.id === groupeId);
-    if (groupe && groupe.admins.includes(utilisateurActuel.id)) {
-        groupe.membres.push(utilisateurId);
-        groupe.demandes = groupe.demandes.filter(id => id !== utilisateurId);
-        sauvegarderGroupes();
-        creerNotification([utilisateurId], `Vous avez été accepté dans le groupe ${groupe.nom}`);
-        afficherGroupes();
+        afficherDetailsGroupe(groupeId);
     }
 }
 
 function demarrerLectureCoran(groupeId) {
     const groupe = groupes.find(g => g.id === groupeId);
-    if (groupe && groupe.admins.includes(utilisateurActuel.id)) {
+    if (groupe) {
         const lecture = {
             groupeId: groupeId,
             type: 'coran',
@@ -71,7 +45,6 @@ function demarrerLectureCoran(groupeId) {
         };
         lecturesActives.push(lecture);
         sauvegarderLectures();
-        creerNotification(groupe.membres, `Une nouvelle lecture du Coran a commencé dans ${groupe.nom}`);
         afficherJuz(groupeId);
     }
 }
@@ -79,7 +52,7 @@ function demarrerLectureCoran(groupeId) {
 function selectionnerJuz(groupeId, juzNumber) {
     const lecture = lecturesActives.find(l => l.groupeId === groupeId && l.type === 'coran');
     if (lecture && lecture.juzDisponibles.includes(juzNumber)) {
-        lecture.selections[juzNumber] = utilisateurActuel.id;
+        lecture.selections[juzNumber] = Date.now(); // Utilise un ID unique pour chaque sélection
         lecture.juzDisponibles = lecture.juzDisponibles.filter(j => j !== juzNumber);
         sauvegarderLectures();
         afficherJuz(groupeId);
@@ -102,7 +75,6 @@ function ajouterDoua(groupeId) {
         };
         lecturesActives.push(doua);
         sauvegarderLectures();
-        creerNotification(groupes.find(g => g.id === groupeId).membres, `Nouveau Doua ajouté : ${nom}`);
         afficherDouas(groupeId);
     }
 }
@@ -111,22 +83,10 @@ function participerDoua(douaId, nombre) {
     const doua = lecturesActives.find(d => d.id === douaId && d.type === 'doua');
     if (doua && nombre <= doua.reste) {
         doua.reste -= nombre;
-        doua.participants.push({ utilisateur: utilisateurActuel.id, nombre: nombre });
+        doua.participants.push({ id: Date.now(), nombre: nombre });
         sauvegarderLectures();
         afficherDouas(doua.groupeId);
     }
-}
-
-function creerNotification(destinataires, message) {
-    const notification = {
-        id: Date.now(),
-        destinataires: destinataires,
-        message: message,
-        lu: false
-    };
-    notifications.push(notification);
-    sauvegarderNotifications();
-    afficherNotifications();
 }
 
 function sauvegarderGroupes() {
@@ -137,28 +97,9 @@ function sauvegarderLectures() {
     localStorage.setItem('lecturesActives', JSON.stringify(lecturesActives));
 }
 
-function sauvegarderNotifications() {
-    localStorage.setItem('notifications', JSON.stringify(notifications));
-}
-
 function chargerDonnees() {
     groupes = JSON.parse(localStorage.getItem('groupes')) || [];
     lecturesActives = JSON.parse(localStorage.getItem('lecturesActives')) || [];
-    notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    utilisateurActuel = JSON.parse(localStorage.getItem('utilisateurActuel'));
-}
-
-function mettreAJourInterface() {
-    if (utilisateurActuel) {
-        document.getElementById('auth-panel').style.display = 'none';
-        document.getElementById('user-panel').style.display = 'block';
-        document.getElementById('user-name').textContent = utilisateurActuel.name;
-        afficherGroupes();
-        afficherNotifications();
-    } else {
-        document.getElementById('auth-panel').style.display = 'block';
-        document.getElementById('user-panel').style.display = 'none';
-    }
 }
 
 function afficherGroupes() {
@@ -168,12 +109,7 @@ function afficherGroupes() {
         const groupeElement = document.createElement('div');
         groupeElement.className = 'group-item';
         groupeElement.textContent = groupe.nom;
-        if (groupe.membres.includes(utilisateurActuel.id)) {
-            groupeElement.classList.add('member');
-            groupeElement.onclick = () => afficherDetailsGroupe(groupe.id);
-        } else {
-            groupeElement.onclick = () => demanderRejoindreGroupe(groupe.id);
-        }
+        groupeElement.onclick = () => afficherDetailsGroupe(groupe.id);
         groupList.appendChild(groupeElement);
     });
 }
@@ -181,9 +117,7 @@ function afficherGroupes() {
 function afficherDetailsGroupe(groupeId) {
     afficherJuz(groupeId);
     afficherDouas(groupeId);
-    if (groupes.find(g => g.id === groupeId).admins.includes(utilisateurActuel.id)) {
-        afficherPanneauAdmin(groupeId);
-    }
+    document.getElementById('admin-panel').style.display = 'block';
 }
 
 function afficherJuz(groupeId) {
@@ -195,10 +129,8 @@ function afficherJuz(groupeId) {
             const juzElement = document.createElement('div');
             juzElement.className = 'juz-item';
             juzElement.textContent = `Juz ${i}`;
-            if (lecture.selections[i] === utilisateurActuel.id) {
+            if (lecture.selections[i]) {
                 juzElement.classList.add('selected');
-            } else if (lecture.selections[i]) {
-                juzElement.classList.add('taken');
             } else {
                 juzElement.onclick = () => selectionnerJuz(groupeId, i);
             }
@@ -224,15 +156,6 @@ function afficherDouas(groupeId) {
     });
 }
 
-function afficherPanneauAdmin(groupeId) {
-    document.getElementById('admin-panel').style.display = 'block';
-    // Ajoutez ici la logique pour afficher les demandes d'adhésion et autres fonctionnalités d'administration
-}
-
-function afficherNotifications() {
-    const notifContainer = document.getElementById('notifications');
-    notifContainer.innerHTML = '';
-    notifications
-        .filter(n => n.destinataires.includes(utilisateurActuel.id) && !n.lu)
-        .forEach(n => {
-            const notifElement =
+// Initialisation
+document.getElementById('start-coran').addEventListener('click', () => demarrerLectureCoran(groupes[0]?.id));
+document.getElementById('add-doua').addEventListener('click', () => ajouterDoua(groupes[0]?.id));
