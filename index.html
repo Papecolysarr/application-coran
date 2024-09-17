@@ -10,35 +10,23 @@
     <div class="container">
         <h1>Application de Lecture du Coran et Douas</h1>
         
-        <div id="user-panel">
-            <div id="group-management">
-                <h3>Gestion des Groupes</h3>
-                <input type="text" id="new-group-name" placeholder="Nom du nouveau groupe">
-                <button id="create-group">Créer un Groupe</button>
-                <div id="group-list"></div>
-            </div>
-
+        <div id="main-panel">
             <div id="coran-section">
                 <h3>Lecture du Coran</h3>
+                <button id="start-coran">Démarrer une Lecture du Coran</button>
                 <div id="juz-list"></div>
             </div>
 
             <div id="doua-section">
                 <h3>Douas</h3>
+                <div id="add-doua-form">
+                    <input type="text" id="doua-name" placeholder="Nom du Doua">
+                    <input type="number" id="doua-count" placeholder="Nombre total">
+                    <input type="datetime-local" id="doua-deadline">
+                    <button id="add-doua">Ajouter un Doua</button>
+                </div>
                 <div id="doua-list"></div>
             </div>
-        </div>
-
-        <div id="admin-panel" style="display: none;">
-            <h3>Panneau d'Administration</h3>
-            <button id="start-coran">Démarrer une Lecture du Coran</button>
-            <div id="admin-doua-section">
-                <input type="text" id="doua-name" placeholder="Nom du Doua">
-                <input type="number" id="doua-count" placeholder="Nombre total">
-                <input type="datetime-local" id="doua-deadline">
-                <button id="add-doua">Ajouter un Doua</button>
-            </div>
-            <div id="member-requests"></div>
         </div>
     </div>
     <script src="script.js"></script>
