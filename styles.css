@@ -42,14 +42,14 @@ button:hover {
     background: #45a049;
 }
 
-#group-list, #juz-list, #doua-list {
+#juz-list, #doua-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px;
     margin-top: 10px;
 }
 
-.group-item, .juz-item, .doua-item {
+.juz-item, .doua-item {
     background: #a5d6a7;
     padding: 10px;
     border-radius: 4px;
@@ -67,21 +67,6 @@ button:hover {
     color: white;
 }
 
-#admin-panel {
-    background: #c8e6c9;
-    padding: 15px;
-    border-radius: 4px;
-    margin-top: 20px;
-}
-
-#member-requests {
-    margin-top: 15px;
-}
-
-.request-item {
-    background: #e8f5e9;
-    border: 1px solid #4caf50;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 4px;
+#add-doua-form {
+    margin-bottom: 20px;
 }
