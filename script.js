@@ -2,42 +2,28 @@ let utilisateurActuel = null;
 let groupes = [];
 let lecturesActives = [];
 let notifications = [];
-let codeVerification = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('send-code').addEventListener('click', envoyerCode);
-    document.getElementById('auth-button').addEventListener('click', authentifier);
+    document.getElementById('login-button').addEventListener('click', seConnecter);
     document.getElementById('create-group').addEventListener('click', creerGroupe);
     
     chargerDonnees();
     mettreAJourInterface();
 });
 
-function envoyerCode() {
+function seConnecter() {
     const phoneNumber = document.getElementById('phone-number').value;
-    if (phoneNumber) {
-        codeVerification = Math.floor(1000 + Math.random() * 9000);
-        alert(`Code de vérification : ${codeVerification}`);
-        document.getElementById('verification-code').style.display = 'block';
-        document.getElementById('password').style.display = 'block';
-        document.getElementById('auth-button').style.display = 'block';
-    } else {
-        alert("Veuillez entrer un numéro de téléphone.");
-    }
-}
-
-function authentifier() {
-    const phoneNumber = document.getElementById('phone-number').value;
-    const enteredCode = document.getElementById('verification-code').value;
     const password = document.getElementById('password').value;
-
-    if (parseInt(enteredCode) === codeVerification) {
+    
+    if (phoneNumber && password) {
+        // Ici, vous devriez normalement vérifier les informations d'identification avec un serveur
+        // Pour cet exemple, nous allons simplement créer un nouvel utilisateur
         utilisateurActuel = { id: Date.now(), phoneNumber, name: phoneNumber };
         localStorage.setItem('utilisateurActuel', JSON.stringify(utilisateurActuel));
         mettreAJourInterface();
-        alert("Authentification réussie !");
+        alert("Connexion réussie !");
     } else {
-        alert("Code de vérification incorrect.");
+        alert("Veuillez entrer un numéro de téléphone et un mot de passe.");
     }
 }
 
@@ -244,4 +230,15 @@ function afficherDouas(groupeId) {
     });
 }
 
-function afficherPanne
+function afficherPanneauAdmin(groupeId) {
+    document.getElementById('admin-panel').style.display = 'block';
+    // Ajoutez ici la logique pour afficher les demandes d'adhésion et autres fonctionnalités d'administration
+}
+
+function afficherNotifications() {
+    const notifContainer = document.getElementById('notifications');
+    notifContainer.innerHTML = '';
+    notifications
+        .filter(n => n.destinataires.includes(utilisateurActuel.id) && !n.lu)
+        .forEach(n => {
+            const notifElement =
