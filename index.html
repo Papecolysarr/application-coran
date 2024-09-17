@@ -10,24 +10,40 @@
     <div class="container">
         <h1>Application de Lecture du Coran et Douas</h1>
         
-        <div id="main-panel">
-            <div id="coran-section">
-                <h3>Lecture du Coran</h3>
-                <button id="start-coran">Démarrer une Lecture du Coran</button>
-                <div id="juz-list"></div>
-            </div>
+        <div id="auth-panel">
+            <h2>Connexion</h2>
+            <input type="text" id="username" placeholder="Nom d'utilisateur">
+            <input type="password" id="password" placeholder="Mot de passe">
+            <button id="login-btn">Se connecter</button>
+        </div>
 
-            <div id="doua-section">
-                <h3>Douas</h3>
-                <div id="add-doua-form">
-                    <input type="text" id="doua-name" placeholder="Nom du Doua">
-                    <input type="number" id="doua-count" placeholder="Nombre total">
-                    <input type="datetime-local" id="doua-deadline">
-                    <button id="add-doua">Ajouter un Doua</button>
-                </div>
-                <div id="doua-list"></div>
+        <div id="admin-panel" style="display: none;">
+            <h2>Panneau d'Administration</h2>
+            <div id="coran-admin">
+                <h3>Gestion de la Lecture du Coran</h3>
+                <button id="start-coran">Ouvrir une Lecture du Coran</button>
+                <input type="datetime-local" id="coran-deadline">
+                <button id="set-coran-deadline">Définir l'heure de fin</button>
+            </div>
+            <div id="doua-admin">
+                <h3>Ajouter un Doua</h3>
+                <input type="text" id="doua-name" placeholder="Nom du Doua">
+                <input type="number" id="doua-count" placeholder="Nombre total">
+                <input type="datetime-local" id="doua-deadline">
+                <button id="add-doua">Ajouter un Doua</button>
             </div>
         </div>
+
+        <div id="user-panel" style="display: none;">
+            <h2>Lecture du Coran</h2>
+            <div id="coran-status"></div>
+            <div id="juz-list"></div>
+
+            <h2>Douas</h2>
+            <div id="doua-list"></div>
+        </div>
+
+        <div id="notifications"></div>
     </div>
     <script src="script.js"></script>
 </body>
