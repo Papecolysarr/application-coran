@@ -16,16 +16,10 @@ function seConnecter() {
     const password = document.getElementById('password').value;
     
     if (phoneNumber && password) {
-        // Ici, vous devriez normalement vérifier les informations d'identification avec un serveur
-        // Pour cet exemple, nous allons simplement créer un nouvel utilisateur
         utilisateurActuel = { id: Date.now(), phoneNumber, name: phoneNumber };
         localStorage.setItem('utilisateurActuel', JSON.stringify(utilisateurActuel));
         mettreAJourInterface();
-        alert("Connexion réussie !");
-    } else {
-        alert("Veuillez entrer un numéro de téléphone et un mot de passe.");
-    }
-}
+        console.log("Connexion réuss
 
 function creerGroupe() {
     const nom = document.getElementById('new-group-name').value;
